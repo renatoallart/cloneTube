@@ -1,0 +1,48 @@
+problem 1 
+How to make an interface to support the following type.
+ 
+interface something {
+   something: [{sth: something, sth: something}],
+   something: [{sth: something, sth: something}],
+   something: [{sth: something, sth: something}],
+   something: [{sth: something, sth: something}],
+   ...
+}
+
+solution.
+
+Using an Index Signature format [something: something]: something
+in the code goes this: 
+
+interface IIndexSignature {
+  [key: string]: IProps[]
+}
+
+Where the key in [key:string] is the name of the propriety, and the string is the type of the propriety,
+IProps[] represent the value of the key name
+
+Search source
+https://www.typescriptlang.org/docs/handbook/2/mapped-types.html
+https://basarat.gitbook.io/typescript/type-system/index-signatures
+https://stackoverflow.com/questions/56568423/typescript-no-index-signature-with-a-parameter-of-type-string-was-found-on-ty
+
+
+Problem 2
+How to implement. 
+
+Solution.
+
+interface IProps {
+  title: string;
+  url: string;
+  thumb: string;
+}
+
+interface IIndexSignature {
+  [key: string]: IProps[];
+}
+
+interface ITimeLineProps {
+  playList: IIndexSignature;
+}
+
