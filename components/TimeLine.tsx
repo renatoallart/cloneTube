@@ -1,39 +1,89 @@
-import { StyledTimeline } from "../styles/TimeLine";
+import styled from "styled-components";
+import { usePlayListContext } from "../context/PlayListProvider";
 
-interface IProps {
-  title: string;
-  url: string;
-  thumb: string;
-}
-interface IIndexSignature {
-  [key: string]: IProps[];
-}
+// interface IProps {
+//   title: string;
+//   url: string;
+//   thumb: string;
+//   id: number;
+// }
+// interface IIndexSignature {
+//   [key: string]: IProps[];
+// }
+// interface ITimeLineProps {
+//   playList: IIndexSignature;
+// }
 
-interface ITimeLineProps {
-  playList: IIndexSignature;
-}
+const StyledTimeline = styled.div`
+  flex: 1;
+  width: 100%;
+  margin-top: 70px;
+  padding: 16px;
+  overflow: hidden;
+  h2 {
+    font-size: 16px;
+    margin-bottom: 16px;
+    text-transform: capitalize;
+  }
+  img {
+    aspect-ratio: 16/9;
+    font-weight: 500;
+    object-fit: cover;
+    width: 100%;
+    max-width: 210px;
+    height: auto;
+  }
+  section {
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    padding: 16px;
+    div {
+      width: calc(100vw - 16px * 4);
+      display: grid;
+      grid-gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(200px, 1fr);
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+      a {
+        scroll-snap-align: start;
+        span {
+          padding-top: 8px;
+          display: block;
+          padding-right: 24px;
+          color: ${({ theme }) => theme.textColorBase || "#222222"};
+        }
+      }
+    }
+  }
+`;
 
-export function TimeLine({ playList }: ITimeLineProps) {
+export function TimeLine() {
+  const { playList, search } = usePlayListContext();
   const KeyNames = Object.keys(playList);
-  console.log(KeyNames);
 
   return (
     <StyledTimeline>
       {KeyNames.map((name) => {
-        const video = playList[name];
-        console.log(name, video);
+        const videos = playList[name];
         return (
-          <section>
+          <section key={name}>
             <h2>{name}</h2>
             <div>
-              {video.map((item) => {
-                return (
-                  <a href={item.url}>
-                    <img src={item.thumb} alt={item.title} />
-                    <span>{item.title}</span>
-                  </a>
-                );
-              })}
+              {videos
+                .filter((video) =>
+                  video.title.toLowerCase().includes(search.toLowerCase())
+                )
+                .map((item) => {
+                  return (
+                    <a key={item.id} href={item.url}>
+                      <img src={item.thumb} alt={item.title} />
+                      <span>{item.title}</span>
+                    </a>
+                  );
+                })}
             </div>
           </section>
         );

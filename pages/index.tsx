@@ -1,17 +1,19 @@
-import { Menu } from "../components/Menu";
-import { Header } from "../components/Header";
+import { Menu } from "../components/menu/Menu";
 import { TimeLine } from "../components/TimeLine";
-import config from "../config.json";
 import { CSSReset } from "../styles/CSSReset";
+import { Footer } from "../components/footer/Footer";
+import PlayListProvider from "../context/PlayListProvider";
 
 export default function Home() {
   return (
     <>
       <div>
         <CSSReset />
-        <Menu />
-        <Header />
-        <TimeLine playList={config.playlist} />
+        <PlayListProvider>
+          <Menu />
+          <TimeLine />
+        </PlayListProvider>
+        <Footer />
       </div>
     </>
   );
